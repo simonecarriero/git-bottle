@@ -1,0 +1,14 @@
+[package]
+name = "git-bottle"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.79"
+inquire = { version = "0.6.2", features = ["editor"] }
+serde = { version = "1.0.196", features = ["derive"] }
+serde_yaml = "0.9.31"
+thiserror = "1.0.57"
+
+[dev-dependencies]
+mockall = "0.12.1"
