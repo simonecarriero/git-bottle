@@ -28,7 +28,7 @@ pub fn run(
                 }
                 Values::FromGitLog(v) => {
                     let key = format!("{}:", m.name);
-                    let options = find_in_git_log(git, &v.format_strings, &v.depth)?;
+                    let options = find_in_git_log(git, &v.format_strings, &v.max_count)?;
                     if options.is_empty() {
                         let values = prompt.multi_text(&key)?;
                         add_trailers(&mut all_trailers, &key, &values);
@@ -46,7 +46,7 @@ pub fn run(
                 }
                 Values::FromGitLog(v) => {
                     let key = format!("{}:", m.name);
-                    let options = find_in_git_log(git, &v.format_strings, &v.depth)?;
+                    let options = find_in_git_log(git, &v.format_strings, &v.max_count)?;
                     if options.is_empty() {
                         let value = prompt.text(&key)?;
                         add_trailer(&mut all_trailers, &key, &value);
@@ -183,7 +183,7 @@ mod test {
             trailers: vec![Trailer::Select(SelectTrailer {
                 name: "Issue".to_string(),
                 values: Values::FromGitLog(ValuesFromGitLog {
-                    depth: None,
+                    max_count: None,
                     format_strings: vec!["%(trailers:key=Issue,valueonly=true)".to_string()],
                 }),
             })],
@@ -224,7 +224,7 @@ mod test {
             trailers: vec![Trailer::Select(SelectTrailer {
                 name: "Issue".to_string(),
                 values: Values::FromGitLog(ValuesFromGitLog {
-                    depth: None,
+                    max_count: None,
                     format_strings: vec!["%(trailers:key=Issue,valueonly=true)".to_string()],
                 }),
             })],
@@ -303,7 +303,7 @@ mod test {
             trailers: vec![Trailer::MultiSelect(MultiSelectTrailer {
                 name: "Co-authored-by".to_string(),
                 values: Values::FromGitLog(ValuesFromGitLog {
-                    depth: None,
+                    max_count: None,
                     format_strings: vec![
                         "%(trailers:key=Co-authored-by,valueonly=true)".to_string()
                     ],
@@ -359,7 +359,7 @@ mod test {
             trailers: vec![Trailer::MultiSelect(MultiSelectTrailer {
                 name: "Co-authored-by".to_string(),
                 values: Values::FromGitLog(ValuesFromGitLog {
-                    depth: None,
+                    max_count: None,
                     format_strings: vec![
                         "%(trailers:key=Co-authored-by,valueonly=true)".to_string()
                     ],

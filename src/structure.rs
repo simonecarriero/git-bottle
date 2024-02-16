@@ -12,7 +12,7 @@ pub enum Trailer {
     Text(TextTrailer),
     #[serde(rename = "select")]
     Select(SelectTrailer),
-    #[serde(rename = "multiselect")]
+    #[serde(rename = "multi_select")]
     MultiSelect(MultiSelectTrailer),
 }
 
@@ -49,6 +49,6 @@ pub struct ValuesFromOptions {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ValuesFromGitLog {
-    pub depth: Option<i32>,
+    pub max_count: Option<i32>,
     pub format_strings: Vec<String>,
 }

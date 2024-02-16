@@ -19,7 +19,7 @@ fn default_config() -> CommitStructure {
         trailers: vec![Trailer::MultiSelect(MultiSelectTrailer {
             name: "Co-authored-by".to_string(),
             values: Values::FromGitLog(ValuesFromGitLog {
-                depth: None,
+                max_count: None,
                 format_strings: vec![
                     "%an <%ae>".to_string(),
                     "%(trailers:key=Co-authored-by,valueonly=true)".to_string(),
