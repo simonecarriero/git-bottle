@@ -1,11 +1,13 @@
 # git-bottle
-An interactive CLI that streamlines the usage of `Co-authored-by` and other Git trailers
+An interactive CLI tool that streamlines the usage of `Co-authored-by` and other [commit trailers](https://git-scm.com/docs/git-interpret-trailers)
 
 ## Usage
 
 ```
 git bottle
 ```
+
+<p align="center"><img src="/img/demo.gif?raw=true"/></p>
 
 ## Installation
 
