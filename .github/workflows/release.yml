@@ -1,0 +1,31 @@
+name: Release
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  release:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: ${{ github.event.repository.name }}
+          - os: macos-latest
+            artifact_name: ${{ github.event.repository.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build
+        run: cargo build --release
+      - name: Asset name
+        id: asset_name
+        run: |
+          echo "HOST_TRIPLE=$(rustc -vV | awk '/^host/ { print $2 }')" >> $GITHUB_OUTPUT
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/release/${{ matrix.artifact_name }}
+          asset_name: ${{ github.event.repository.name }}-${{steps.asset_name.outputs.HOST_TRIPLE}}
+          tag: ${{ github.ref }}
