@@ -12,7 +12,21 @@ git bottle
 ## Installation
 
 ### From binaries
-TODO
+
+Oneliner for Linux:
+```
+curl -L https://github.com/simonecarriero/git-bottle/releases/download/0.1.0/git-bottle-x86_64-unknown-linux-gnu > git-bottle && \
+  chmod +x git-bottle && \
+  mv git-bottle /usr/local/bin/git-bottle
+```
+
+Oneliner for macOS:
+```
+curl -L https://github.com/simonecarriero/git-bottle/releases/download/0.1.0/git-bottle-x86_64-apple-darwin > git-bottle && \
+  chmod +x git-bottle && \
+  mv git-bottle /usr/local/bin/git-bottle
+```
+
 
 ### From cargo
 ```
