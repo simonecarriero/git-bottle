@@ -1,13 +1,20 @@
 # git-bottle
-An interactive CLI tool that streamlines the usage of `Co-authored-by` and other [commit trailers](https://git-scm.com/docs/git-interpret-trailers)
+The `Co-authored-by` [commit trailer](https://git-scm.com/docs/git-interpret-trailers) is the de-facto standard
+to attribute a commit to multiple authors [^1] [^2] [^3] [^4], useful in particular when practicing
+pair/mob/ensemble programming.
+
+`git-bottle` is an interactive CLI tool to simplify the usage of `Co-authored-by` and other commit trailers.
 
 ## Usage
-
 ```
 git bottle
 ```
 
 <p align="center"><img src="/img/demo.gif?raw=true"/></p>
+
+## Design principles
+* zero-magic: it just runs `git commit -m <message>` where the message is built from your inputs
+* zero-friction: you can start using it now, no configuration or changes required in your repository
 
 ## Installation
 
@@ -15,82 +22,35 @@ git bottle
 
 Oneliner for Linux:
 ```
-curl -L https://github.com/simonecarriero/git-bottle/releases/download/0.1.0/git-bottle-x86_64-unknown-linux-gnu > git-bottle && \
-  chmod +x git-bottle && \
-  mv git-bottle /usr/local/bin/git-bottle
+curl -L https://github.com/simonecarriero/git-bottle/releases/download/0.1.0/git-bottle-x86_64-unknown-linux-gnu > git-bottle && chmod +x git-bottle && mv git-bottle /usr/local/bin/git-bottle
 ```
 
 Oneliner for macOS:
 ```
-curl -L https://github.com/simonecarriero/git-bottle/releases/download/0.1.0/git-bottle-x86_64-apple-darwin > git-bottle && \
-  chmod +x git-bottle && \
-  mv git-bottle /usr/local/bin/git-bottle
+curl -L https://github.com/simonecarriero/git-bottle/releases/download/0.1.0/git-bottle-x86_64-apple-darwin > git-bottle && chmod +x git-bottle && mv git-bottle /usr/local/bin/git-bottle
 ```
-
 
 ### From cargo
 ```
 cargo install --git https://github.com/simonecarriero/git-bottle
 ```
 
-## Custom configuration
-Customize the behavior providing a `.gitbottle.yml` configuration file in your
-repository or in any ancestor folder, using the following schema:
+## Configuration
+Configuration is not required. By default, `git-bottle` prompts for a message and a multi-selection of `Co-authored-by`
+commit trailers, where the options are taken from the git log.
 
-### Top-level keys:
-- `trailers` (Array of Trailer): array containing different types of commit trailers
+To customize the behavior, provide a `.git-bottle.yml` configuration file in your
+repository or in any ancestor folder.
 
-### Trailer
-`Trailer` can be `TextTrailer`, `SelectTrailer` or `MultiSelectTrailer`
+Take a look at the [schema of a .git-bottle.yml configuration file](docs/config/schema.md)
+or at the following examples:
+* [Example 1: multi-selection of `Co-authored-by` from the git log (default behavior)](docs/config/example_1.md)
+* [Example 2: multi-selection of `Co-authored-by` from an explicit list of values](docs/config/example_2.md)
+* [Example 3: selection of `Issue` from the last 10 commits in the git log](docs/config/example_3.md)
+* [Example 4: Example 3 + Example 2](docs/config/example_4.md)
 
-#### TextTrailer
-* keys:
-  * `type`: `text`
-  * `name` (String): the name of the trailer
-
-#### SelectTrailer
-* keys:
-  * `type`: `select`
-  * `name` (String): the name of the trailer
-  * `values` (Values): options for selection
-
-#### MultiSelectTrailer
-* keys:
-  * `type`: `multi_select`
-  * `name` (String): the name of the trailer
-  * `values` (Values): options for selection
-
-### Values
-`Values` can be `ValuesFromOptions` or `ValuesFromGitLog`
-
-#### ValuesFromOptions
-* keys
-  * `type`: `from_options`
-  * `options` (Array of String): options for selection
-
-#### ValuesFromGitLog
-* keys
-  * `type`: `from_git_log`
-  * `max_count` (Optional Integer): limit the number of commits in git log
-  * `format_strings` (Array of String): array of format-strings for extracting values
-  from the git log with pretty format (`git log --format=<format-string>`)
-
-### Example of `.gitbottle.yml`:
-
-```
-trailers:
-  - name: Issue
-    type: select
-    values:
-      type: from_git_log
-      max_count: 10
-      format_strings:
-        - "%(trailers:key=Issue,valueonly=true)"
-  - name: Co-authored-by
-    type: multi_select
-    values:
-      type: from_git_log
-      format_strings:
-        - "%an <%ae>"
-        - "%(trailers:key=Co-authored-by,valueonly=true)"
-```
+## References
+[^1]: [git-core #451880 - Git should support multiple authors for a commit](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=451880)
+[^2]: [GitHub Blog - Commit together with co-authors](https://github.blog/2018-01-29-commit-together-with-co-authors/)
+[^3]: [GitHub Docs - Creating a commit with multiple authors](https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors)
+[^4]: [GitLab Docs - Supported variables in commit templates](https://docs.gitlab.com/ee/user/project/merge_requests/commit_templates.html)
