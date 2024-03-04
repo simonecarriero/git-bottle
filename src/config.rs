@@ -33,7 +33,7 @@ fn find_git_bottle_config() -> Option<String> {
     let current_dir = env::current_dir().ok()?;
 
     for ancestor in current_dir.ancestors() {
-        let file_path = ancestor.join(".gitbottle.yml");
+        let file_path = ancestor.join(".git-bottle.yml");
         if file_path.exists() {
             return Some(file_path.to_string_lossy().into_owned());
         }
